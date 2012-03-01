@@ -1,0 +1,17 @@
+h1 User Picks for #{user}
+h2 Week 13
+#picks
+  table(border='0',cellpadding='0')
+    thead
+      tr
+        td Game
+        td Favorite
+        td Spread
+        td Opponent
+    tbody
+      each game,i in games
+        tr
+          td.game_id #{i + 1}
+          td.team #{game.favorite}
+          td.spread #{game.spread}
+          td.team #{game.opponent}
