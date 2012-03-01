@@ -3,4 +3,31 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+  body
+    header
+      .home_image
+        img(src='/images/iowa.jpg', alt='Iowa Hawkeyes', width='200', size='100')
+      .results
+        h3 Latest Results
+        table(border='0',cellpadding='0')
+          thead
+            tr
+              th Place
+              th Name
+              th Correct
+              th TB
+              th Payout
+          tbody
+            tr
+              td 1st
+              td Mike
+              td 10
+              td 0
+              td $500
+      nav
+        ul
+          li: a(href='/home/') Home
+          li: a(href='/Picks/') Make some picks
+          li: a(href='/Results/') Results
+    .content
+      != body
