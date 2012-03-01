@@ -1,6 +1,6 @@
 h1 User Picks for #{user}
-h2 Week 13
 #picks
+  h2 Week 13
   table(border='0',cellpadding='0')
     thead
       tr
@@ -11,7 +11,25 @@ h2 Week 13
     tbody
       each game,i in games
         tr
-          td.game_id #{i + 1}
-          td.team #{game.favorite}
-          td.spread #{game.spread}
-          td.team #{game.opponent}
+          td.game_id= i + 1
+          td.team: input(type='radio',name='game'+i,value=game.favorite)
+          td.spread= game.spread
+          td.team: input(type='radio',name='game'+i,value=game.opponent)
+#tiebreaker
+  h2 Tie Breaker
+  table(border='0',cellpadding='0')
+    thead
+      tr
+        td Favorite
+        td Score
+        td Spread
+        td Score
+        td Opponent
+    tbody
+        tr
+          td.team= tiebreaker.favorite
+          td.score: input(type:'text')
+          td.spread= tiebreaker.spread
+          td.score: input(type:'text')
+          td.team= tiebreaker.opponent
+

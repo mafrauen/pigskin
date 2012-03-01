@@ -1,0 +1,14 @@
+h1 Results
+#results
+  table(border='0',cellpadding='0')
+    thead
+      tr
+        td User
+        td Correct
+        td Tie Breaker
+    tbody
+      each result, i in results
+        tr
+          td.game_id #{i + 1}. #{result.user}
+          td.spread= result.correct
+          td.team= result.tiebreaker

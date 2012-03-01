@@ -20,9 +20,36 @@ var games = [
   spread: 1,
   home_favorite: true
 }];
+var tiebreaker =
+{
+  favorite: "Oregon",
+  opponent: "Stanford",
+  spread: 151,
+  home_favorite: false
+}
 
 exports.picks = function(req, res){
   res.render('picks', { title: 'Express',
                         user: 'Mike',
-                        games: games})
+                        games: games,
+                        tiebreaker: tiebreaker })
+};
+
+
+var results = [
+{
+  user: "Mike",
+  correct: 9,
+  tiebreaker: 10
+},
+{
+  user: "Dad",
+  correct: 8,
+  tiebreaker: 15
+}
+]
+
+exports.results = function(req, res){
+  res.render('results', { title: 'Express',
+                          results: results })
 };
