@@ -39,12 +39,12 @@ Models
   * username
   * password?
   * Week
-    * Week ID (needed to show right/wrong picks. would be linked not embedded. still ok?)
-    * Picked Teams
-    * Favorite Tiebreaker
-    * Opponent Tiebreaker
-    * Result Score
-    * Tiebreaker Score
+     * Week ID (needed to show right/wrong picks. would be linked not embedded. still ok?)
+     * Picked Teams
+     * Favorite Tiebreaker
+     * Opponent Tiebreaker
+     * Result Score
+     * Tiebreaker Score
   * Total Score
 
 * Week
