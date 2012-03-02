@@ -7,6 +7,12 @@ Likely going to use twitter bootstrap for initial css/less.
 
 Page will be hosted [here][heroku_url] during development, and possibly for production as well.
 
+
+
+[southslope_url]: http://www.southslope.net/~mattbenge/pigskin/  "Original Pick Site"
+[heroku_url]: http://pigskinpicks.herokuapp.com
+
+
 # TODO
 
 Pages
@@ -83,9 +89,3 @@ Models
 
 Queries I'll need:
     top 3(or more) winners for the week
-
-
-
-
-[southslope_url]: http://www.southslope.net/~mattbenge/pigskin/  "Original Pick Site"
-[heroku_url]: http://pigskinpicks.herokuapp.com
