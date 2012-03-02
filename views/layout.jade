@@ -2,32 +2,33 @@
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
   body
-    header
-      .home_image
-        img(src='/images/iowa.jpg', alt='Iowa Hawkeyes', width='200', size='100')
-      .results
-        h3 Latest Results
-        table(border='0',cellpadding='0')
-          thead
-            tr
-              th Place
-              th Name
-              th Correct
-              th TB
-              th Payout
-          tbody
-            tr
-              td 1st
-              td Mike
-              td 10
-              td 0
-              td $500
-      nav
-        ul
-          li: a(href='/') Home
-          li: a(href='/picks/') Make some picks
-          li: a(href='/results/') Results
-    .content
-      != body
+    .container-fluid
+      .row-fluid
+        .span3
+          img(src='/images/iowa.jpg', alt='Iowa Hawkeyes')
+          .well.sidebar-nav
+            .nav.nav-list
+              ul
+                li: a(href='/') Home
+                li: a(href='/picks/') Make some picks
+                li: a(href='/results/') Results
+          h3 Latest Results
+          table(border='0',cellpadding='0')
+            thead
+              tr
+                th Place
+                th Name
+                th Correct
+                th TB
+                th Payout
+            tbody
+              tr
+                td 1st
+                td Mike
+                td 10
+                td 0
+                td $500
+        .span9
+          != body

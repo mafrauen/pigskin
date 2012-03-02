@@ -35,8 +35,11 @@ Models
 ------
 
 * User
+  * Full Name
+  * username
+  * password?
   * Week
-    * Week ID
+    * Week ID (needed to show right/wrong picks. would be linked not embedded. still ok?)
     * Picked Teams
     * Favorite Tiebreaker
     * Opponent Tiebreaker
@@ -45,15 +48,13 @@ Models
   * Total Score
 
 * Week
-  * Name / Number
+  * Number (unique id, will reset each season)
   * Date of games
   * Games
      * Home Team
      * Away Team
      * Spread
-     * Is Home Team Favorite
-     * Home Score
-     * Away Score
+     * Home Favorite
   * Tiebreaker (game)
 
 
