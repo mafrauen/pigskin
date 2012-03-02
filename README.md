@@ -34,7 +34,19 @@ Pages
 Models
 ------
 
+* User
+  * Week
+    * Week ID
+    * Picked Teams
+    * Favorite Tiebreaker
+    * Opponent Tiebreaker
+    * Result Score
+    * Tiebreaker Score
+  * Total Score
+
 * Week
+  * Name / Number
+  * Date of games
   * Games
      * Home Team
      * Away Team
@@ -44,6 +56,9 @@ Models
      * Away Score
   * Tiebreaker (game)
 
+
+### Previous Thoughts
+
 * User
   * Week
     * Teams
@@ -51,8 +66,6 @@ Models
     * Opponent Score
     * Score
     * Tiebreaker Score
-
-**Embed all of `Week` into `User\Week`??**
 
 * Week
   * Games
@@ -77,8 +90,6 @@ Models
     * Opponent Score
     * Score
     * Tiebreaker Score
-
-
 
 * Results
   * User
@@ -87,5 +98,6 @@ Models
       * Tiebreaker
     * Total YTD correct
 
-Queries I'll need:
-    top 3(or more) winners for the week
+
+#### Queries I'll Need
+    top 3(or more) winners for the week : Users(all).week(7).sort(score -1, tb 1).limit(3)
