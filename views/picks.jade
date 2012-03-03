@@ -1,20 +1,20 @@
-h1 User Picks for #{user.full_name}
+h1 Picks for #{user.full_name}
 #picks
   h2 Week 13
   table(class='table')
     thead
       tr
-        th Game
-        th Favorite
+        th Pick
         th Spread
-        th Opponent
     tbody
       each game,i in week.games
         tr
-          td.game_id= i + 1
-          td.team: input(type='radio',name='game'+i,value=game.team_favorite)
+          td
+            .btn-group(data-toggle='buttons-radio')
+              button.btn.btn-warning= game.team_favorite
+              button.btn.btn.inverse.disabled= 'by ' + game.spread + ' over'
+              button.btn.btn-warning= game.team_opponent
           td.spread= game.spread
-          td.team: input(type='radio',name='game'+i,value=game.team_opponent)
 #tiebreaker
   h2 Tie Breaker
   table.table

@@ -4,3 +4,6 @@ body {
 .navbar .brand {
   float: right;
 }
+.btn-warning.active .btn-warning:active {
+  background-color: black;
+}
