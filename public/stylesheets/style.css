@@ -4,6 +4,13 @@ body {
 .navbar .brand {
   float: right;
 }
-.btn-warning.active .btn-warning:active {
+.btn-group .btn {
+  text-shadow: none;
+  color: black;
+  width: 12em;
+}
+.btn-warning:active,
+.btn-warning.active {
   background-color: black;
+  color: gold;
 }
