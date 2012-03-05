@@ -71,3 +71,14 @@ exports.submit_picks = function(req, res){
   });
   res.redirect('back');
 };
+
+// GET new week
+exports.week_new = function(req, res) {
+  res.render('week', { title: 'Pigskin Picks' });
+}
+
+// POST new week
+exports.week_create = function(req, res) {
+  console.log(req.body);
+  res.redirect('back');
+}

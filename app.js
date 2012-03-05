@@ -36,7 +36,9 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/picks', routes.picks);
 app.get('/results', routes.results);
+app.get('/week', routes.week_new);
 app.post('/picks', routes.submit_picks);
+app.post('/week', routes.week_create);
 
 app.listen(process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

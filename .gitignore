@@ -1,0 +1,5 @@
+# Ignore modules
+node_modules/
+
+# Ignore vim swp files
+*.swp
