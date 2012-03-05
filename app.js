@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+  , mongoose = require('mongoose')
   , routes = require('./routes');
 
 var app = module.exports = express.createServer();
@@ -17,7 +18,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.compiler({ src: __dirname + '/public', enable: ['less']}));
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  app.use(express.session({ secret: '74dj3$jl' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -33,8 +34,9 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/picks/', routes.picks);
-app.get('/results/', routes.results);
+app.get('/picks', routes.picks);
+app.get('/results', routes.results);
+app.post('/picks', routes.submit_picks);
 
 app.listen(process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

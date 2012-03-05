@@ -1,36 +1,38 @@
 h1 Picks for #{user.full_name}
-#picks
-  h2 Week 13
-  table(class='table')
-    thead
-      tr
-        th Pick
-        th Spread
-    tbody
-      each game,i in week.games
+form(method='post',action='/picks')
+  input(type='hidden',name='entry[week]',value=week.number)
+  #picks
+    h2 Week #{week.number}
+    table(class='table')
+      thead
         tr
-          td
-            .btn-group(data-toggle='buttons-radio')
-              button.btn.btn-warning= game.team_favorite
-              button.btn.btn.inverse.disabled= 'by ' + game.spread + ' over'
-              button.btn.btn-warning= game.team_opponent
-          td.spread= game.spread
-#tiebreaker
-  h2 Tie Breaker
-  table.table
-    thead
-      tr
-        th Favorite
-        th Score
-        th Spread
-        th Score
-        th Opponent
-    tbody
+          th Pick
+          th Spread
+      tbody
+        each game,i in week.games
+          tr
+            td
+              label= game.team_favorite
+              input(type='radio',value=game.team_favorite,name='entry[teams]['+i+']')
+            td.spread= game.spread
+            td
+              label= game.team_opponent
+              input(type='radio',value=game.team_opponent,name='entry[teams]['+i+']')
+  #tiebreaker
+    h2 Tie Breaker
+    table.table
+      thead
         tr
-          - var tiebreaker = week.tiebreaker;
-          td.team= tiebreaker.team_favorite
-          td.score: input.span1(type:'text')
-          td.spread= tiebreaker.spread
-          td.score: input.span1(type:'text')
-          td.team= tiebreaker.team_opponent
-
+          th Favorite
+          th Score
+          th Spread
+          th Score
+          th Opponent
+      tbody
+          tr
+            td.team= week.tiebreaker_favorite
+            td.score: input.span1(type='text',name='entry[tiebreaker_favorite]')
+            td.spread= week.tiebreaker_spread
+            td.score: input.span1(type='text',name='entry[tiebreaker_opponent]')
+            td.team= week.tiebreaker_opponent
+  input.btn(type='submit',value='Submit')
