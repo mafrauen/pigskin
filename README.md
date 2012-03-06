@@ -1,15 +1,16 @@
-Recreating the pigskin picks website originally located [here][southslope_url]. Putting a modern face on football betting.
+Recreating the pigskin picks website originally located [here][southslope_url]
 
 Using node.js and express.js.
-Likely going to use MongoDB/Mongoose for modeling. Database hosted on MongoHQ.
-Likely going to use twitter bootstrap for initial css/less.
-
+Using mongoose.js for data modeling, hosting data on [MongoHQ][mongohq_url]
+Initial css is from [twitter bootstrap][bootstrap_url]
 
 Page will be hosted [here][heroku_url] during development, and possibly for production as well.
 
 
 
 [southslope_url]: http://www.southslope.net/~mattbenge/pigskin/  "Original Pick Site"
+[mongohq_url]: http://www.mongohq.com
+[bootstrap_url]: http://twitter.github.com/bootstrap
 [heroku_url]: http://pigskinpicks.herokuapp.com
 
 
@@ -57,48 +58,6 @@ Models
      * Home Favorite
   * Tiebreaker (game)
 
-
-### Previous Thoughts
-
-* User
-  * Week
-    * Teams
-    * Favorite Score
-    * Opponent Score
-    * Score
-    * Tiebreaker Score
-
-* Week
-  * Games
-     * Home Team
-     * Away Team
-     * Spread
-     * Is Home Team Favorite
-     * Home Score
-     * Away Score
-  * Tiebreaker (game)
-  * User
-    * Teams
-    * Favorite Score
-    * Opponent Score
-    * Score
-    * Tiebreaker Score
-
-* User
-  * Week
-    * Teams
-    * Favorite Score
-    * Opponent Score
-    * Score
-    * Tiebreaker Score
-
-* Results
-  * User
-    * Week
-      * Correct
-      * Tiebreaker
-    * Total YTD correct
-
-
-#### Queries I'll Need
+Queries I'll Need
+-----------------
     top 3(or more) winners for the week : Users(all).week(7).sort(score -1, tb 1).limit(3)
