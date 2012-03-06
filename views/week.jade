@@ -1,2 +1,47 @@
 h1= title
 h2 Add a new week of games
+form(method='post')
+  table.table.table-condensed
+    thead
+      tr
+        th Game
+        th Favorite
+        th Spread
+        th Opponent
+        th Home Favorite
+    tbody
+      - for (var i = 1; i<11; i++) {
+        tr
+          td= i
+          td
+            input.span2(name='week[team_favorite]')
+          td
+            input.span1(name='week[spread]')
+          td
+            input.span2(name='week[team_opponent]')
+          td
+            input(type='checkbox', name='week[home_team]', value=i)
+      - }
+
+  table.table.table-condensed
+    thead
+      tr
+        th Tiebreaker
+      tr
+        th Favorite
+        th Spread
+        th Opponent
+        th Home Favorite
+    tbody
+      tr
+        td
+          input.span2(name='week[tiebreaker_favorite]')
+        td
+          input.span1(name='week[tiebreaker_spread]')
+        td
+          input.span2(name='week[tiebreaker_opponent]')
+        td
+          input(type='checkbox', name='week[tiebreaker_home_favorite]', value=true)
+
+  input(type='hidden',name='week[number]',value=weeks.length + 1)
+  input.btn(type='submit',value='Submit')
