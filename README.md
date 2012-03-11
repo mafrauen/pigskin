@@ -16,12 +16,18 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 
 # TODO
 
+* Create users
+* handle user passwords
+* View existing picks as PDF
+* View game results (scores, covers, etc.) for all weeks
+
 Pages
 -----
 
-* Home
-  * results from last week
+* Nav bar
   * link to login/create new user
+* Side bar
+  * results from last week
 * Results
   * everybody's results by week
   * everybody's results YTD
@@ -30,6 +36,10 @@ Pages
   * enter picks for the week
   * can only enter for current week
   * if already entered for week, redirect to results/show picks for the week
+* Login
+  * Username
+  * Full name
+  * password...
 
 
 Models

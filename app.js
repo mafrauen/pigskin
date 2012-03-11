@@ -39,6 +39,7 @@ app.get('/results', routes.results);
 app.get('/week', routes.week_new);
 app.post('/picks', routes.submit_picks);
 app.post('/week', routes.week_create);
+app.get('/user', routes.new_user);
 
 app.listen(process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

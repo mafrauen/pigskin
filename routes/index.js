@@ -1,23 +1,26 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema;
 
-var Game = new Schema({
+var GameSchema = new Schema({
     team_favorite : String
   , team_opponent : String
   , spread : Number
   , is_favorite_home : Boolean
 });
+var Game = mongoose.model('Game', GameSchema)
 
-var Week = new Schema({
-    number : Number
-  , games : [Game]
+var WeekSchema = new Schema({
+    _id : String // Year/Week, ex. 2012_1
+  , number : Number
+  , games : [GameSchema]
   , tiebreaker_favorite : String
   , tiebreaker_opponent : String
   , tiebreaker_spread : Number
   , tiebreaker_home_favorite : Boolean
 });
+var Week = mongoose.model('Week', WeekSchema)
 
-var Entry = new Schema({
+var EntrySchema = new Schema({
     week : Number
   , teams : [String]
   , tiebreaker_favorite : Number
@@ -25,31 +28,41 @@ var Entry = new Schema({
   , score_result : Number
   , score_tiebreaker : Number
 });
+var Entry = mongoose.model('Entry', EntrySchema)
 
-var User = new Schema({
+var UserSchema = new Schema({
     _id : String //username
   , full_name : String
-  , entries : [Entry]
+  , entries : [EntrySchema]
   , score_total : Number
+  , is_admin : Boolean
 });
+var User = mongoose.model('User', UserSchema)
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
-var games = mongoose.model('Game', Game)
-var weeks = mongoose.model('Week', Week)
-var entries = mongoose.model('Entry', Entry)
-var users = mongoose.model('User', User)
 
 exports.index = function(req, res){
   res.render('index', { title: 'Pigskin Picks' })
 };
 
+function user_has_entry_for_week(user, week) {
+  function entryIsForWeek(entry, i, a) {
+    return entry.week*1 == week.number*1;
+  }
+  return user.entries.some(entryIsForWeek);
+}
+
 exports.picks = function(req, res){
-  users.findOne({full_name:'Michael Frauenholtz'}, function(err, doc) {
-    weeks.find({}).desc('number').limit(1).run(function(err, week_docs) {
-      console.log(week_docs);
+  // TODO get logged in user
+  User.findOne({full_name:'Michael Frauenholtz'}, function(err, user) {
+    Week.findOne({}).desc('number').run(function(err, week) {
+      if (user_has_entry_for_week(user, week)) {
+        console.log('picked');
+      };
+
       res.render('picks', { title: 'Pigskin Picks',
-                            user: doc,
-                            week: week_docs[0] })
+                            user: user,
+                            week: week })
     });
   });
 };
@@ -61,21 +74,33 @@ exports.results = function(req, res){
 };
 
 exports.submit_picks = function(req, res){
-  mongoose.model('User').findOne({full_name:'Michael Frauenholtz'}, function(err, user) {
+  // TODO get logged in user
+  User.findOne({full_name:'Michael Frauenholtz'}, function(err, user) {
     var entry = req.body.entry;
     entry.score_result = 0;
     entry.score_tiebreaker = 0;
     user.entries.push(entry);
     user.save(function(err) {
+      // TODO this may have errors for not enough picks
       if (err) console.log(err);
     });
   });
   res.redirect('back');
 };
 
+exports.new_user = function(req, res) {
+  var user = new User();
+  user._id = 'mafrauen';
+  user.full_name = 'Michael Frauenholtz';
+  user.score_total = 0;
+  user.save(function(err) { if (err) console.log(err); });
+  res.redirect('/');
+}
+
 // GET new week
 exports.week_new = function(req, res) {
-  weeks.count({}, function(err, size) {
+  // TODO Validate that logged in user is an admin
+  Week.count({}, function(err, size) {
     res.render('week', { title: 'Pigskin Picks',
                          week_size: size });
   });
@@ -83,8 +108,10 @@ exports.week_new = function(req, res) {
 
 // POST new week
 exports.week_create = function(req, res) {
-  var week = new weeks();
-  week.number = req.body.week.number;
+  var week = new Week();
+  var number = req.body.week.number;
+  week._id = '2012_'+number;
+  week.number = number;
 
   for (var i = 0; i< 10; i++) {
     var game = {};
