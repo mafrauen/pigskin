@@ -41,8 +41,15 @@ var User = mongoose.model('User', UserSchema)
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
 
+
+
+
+
+
+
 exports.index = function(req, res){
-  res.render('index', { title: 'Pigskin Picks' })
+  res.render('index', { title: 'Pigskin Picks',
+                        user: req.session.user })
 };
 
 function user_has_entry_for_week(user, week) {
@@ -50,7 +57,7 @@ function user_has_entry_for_week(user, week) {
     return entry.week*1 == week.number*1;
   }
   return user.entries.some(entryIsForWeek);
-}
+};
 
 exports.picks = function(req, res){
   // TODO get logged in user
@@ -88,13 +95,24 @@ exports.submit_picks = function(req, res){
   res.redirect('back');
 };
 
-exports.new_user = function(req, res) {
-  var user = new User();
-  user._id = 'mafrauen';
-  user.full_name = 'Michael Frauenholtz';
+// GET new user
+exports.user_new = function(req, res) {
+  res.render('user', { title: 'Pigskin Picks',
+                       user: req.session.user })
+}
+
+// POST new user
+exports.user_create = function(req, res) {
+  var user = new User(req.body.user);
   user.score_total = 0;
-  user.save(function(err) { if (err) console.log(err); });
-  res.redirect('/');
+  user.is_admin = false;
+  user.save(function(err) {
+    if (err) console.log(err);
+  });
+  req.session.regenerate(function() {
+    req.session.user = user;
+    res.redirect('/');
+  });
 }
 
 // GET new week
@@ -130,4 +148,33 @@ exports.week_create = function(req, res) {
   week.save(function(err) {});
 
   res.redirect('back');
+}
+
+// GET login form
+exports.login_form = function(req, res) {
+  res.render('login', { title: 'Pigskin Picks',
+                        user: req.session.user });
+}
+
+// POST to login page
+exports.login = function(req, res) {
+  User.findOne({_id: req.body.user._id}, function(err, user) {
+    console.log(err);
+    console.log(user);
+    if (user) {
+      req.session.regenerate(function() {
+        req.session.user = user;
+        res.redirect('/');
+      });
+    } else {
+      req.session.error = 'Invalid user';
+      res.redirect('back');
+    }
+  });
+}
+
+exports.logout = function(req, res) {
+  req.session.destroy(function() {
+    res.redirect('/');
+  });
 }

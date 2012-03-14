@@ -19,6 +19,14 @@ html
               li: a(href='/') Home
               li: a(href='/picks/') Make some picks
               li: a(href='/results/') Results
+            - if (user)
+              ul.nav.pull-right
+                li: a(href='/logout/') Logout
+              p.navbar-text.pull-right Logged in as #{user.full_name}
+            - else
+              ul.nav.pull-right
+                li: a(href='/login/') Login
+                li: a(href='/user/') Create User
     .container-fluid
       .row-fluid
         .span4
