@@ -1,55 +1,7 @@
-var mongoose = require('mongoose')
-  , Schema = mongoose.Schema;
-
-var GameSchema = new Schema({
-    team_favorite : String
-  , team_opponent : String
-  , spread : Number
-  , is_favorite_home : Boolean
-});
-var Game = mongoose.model('Game', GameSchema)
-
-var WeekSchema = new Schema({
-    _id : String // Year/Week, ex. 2012_1
-  , number : Number
-  , games : [GameSchema]
-  , tiebreaker_favorite : String
-  , tiebreaker_opponent : String
-  , tiebreaker_spread : Number
-  , tiebreaker_home_favorite : Boolean
-});
-var Week = mongoose.model('Week', WeekSchema)
-
-var EntrySchema = new Schema({
-    week : Number
-  , teams : [String]
-  , tiebreaker_favorite : Number
-  , tiebreaker_opponent : Number
-  , score_result : Number
-  , score_tiebreaker : Number
-});
-var Entry = mongoose.model('Entry', EntrySchema)
-
-var UserSchema = new Schema({
-    _id : String //username
-  , full_name : String
-  , entries : [EntrySchema]
-  , score_total : Number
-  , is_admin : Boolean
-});
-var User = mongoose.model('User', UserSchema)
-
-mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
-
-
-
-
-
-
+var model = require('../model');
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Pigskin Picks',
-                        user: req.session.user })
+  res.render('index',{});
 };
 
 function user_has_entry_for_week(user, week) {
@@ -60,29 +12,27 @@ function user_has_entry_for_week(user, week) {
 };
 
 exports.picks = function(req, res){
-  // TODO get logged in user
-  User.findOne({full_name:'Michael Frauenholtz'}, function(err, user) {
-    Week.findOne({}).desc('number').run(function(err, week) {
-      if (user_has_entry_for_week(user, week)) {
-        console.log('picked');
-      };
+  model.Week.findOne({}).desc('number').run(function(err, week) {
+    if (user_has_entry_for_week(req.session.user, week)) {
+      console.log('picked');
+    };
 
-      res.render('picks', { title: 'Pigskin Picks',
-                            user: user,
-                            week: week })
-    });
+    res.render('picks', { week: week })
   });
 };
 
 exports.results = function(req, res){
-  res.render('results', { title: 'Pigskin Picks',
-                          weeks: weeks,
-                          users: users })
+  model.Week.find({}).run(function (err, weeks) {
+    model.User.find({}).run(function(err, users) {
+      res.render('results', { weeks: weeks,
+                              users: users })
+    });
+  });
 };
 
 exports.submit_picks = function(req, res){
-  // TODO get logged in user
-  User.findOne({full_name:'Michael Frauenholtz'}, function(err, user) {
+  //TODO need to find user, or can i use user var?
+  model.User.findOne({_id:user._id}, function(err, user) {
     var entry = req.body.entry;
     entry.score_result = 0;
     entry.score_tiebreaker = 0;
@@ -97,36 +47,36 @@ exports.submit_picks = function(req, res){
 
 // GET new user
 exports.user_new = function(req, res) {
-  res.render('user', { title: 'Pigskin Picks',
-                       user: req.session.user })
+  res.render('user');
 }
 
 // POST new user
 exports.user_create = function(req, res) {
-  var user = new User(req.body.user);
-  user.score_total = 0;
-  user.is_admin = false;
-  user.save(function(err) {
+  var newUser = new model.User(req.body.user);
+  newUser.score_total = 0;
+  newUser.is_admin = false;
+  newUser.save(function(err) {
     if (err) console.log(err);
   });
   req.session.regenerate(function() {
-    req.session.user = user;
+    req.session.user = newUser;
+    //TODO may want to redirect somewhere else?
     res.redirect('/');
   });
 }
 
 // GET new week
 exports.week_new = function(req, res) {
+  console.log(user);
   // TODO Validate that logged in user is an admin
-  Week.count({}, function(err, size) {
-    res.render('week', { title: 'Pigskin Picks',
-                         week_size: size });
+  model.Week.count({}, function(err, size) {
+    res.render('week', { week_size: size });
   });
 }
 
 // POST new week
 exports.week_create = function(req, res) {
-  var week = new Week();
+  var week = new model.Week();
   var number = req.body.week.number;
   week._id = '2012_'+number;
   week.number = number;
@@ -152,13 +102,12 @@ exports.week_create = function(req, res) {
 
 // GET login form
 exports.login_form = function(req, res) {
-  res.render('login', { title: 'Pigskin Picks',
-                        user: req.session.user });
+  res.render('login');
 }
 
 // POST to login page
 exports.login = function(req, res) {
-  User.findOne({_id: req.body.user._id}, function(err, user) {
+  model.User.findOne({_id: req.body.user._id}, function(err, user) {
     console.log(err);
     console.log(user);
     if (user) {
@@ -167,7 +116,7 @@ exports.login = function(req, res) {
         res.redirect('/');
       });
     } else {
-      req.session.error = 'Invalid user';
+      req.flash('error', 'Not a valid user');
       res.redirect('back');
     }
   });

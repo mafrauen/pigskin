@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -19,6 +18,9 @@ app.configure(function(){
   app.use(express.compiler({ src: __dirname + '/public', enable: ['less']}));
   app.use(express.cookieParser());
   app.use(express.session({secret:'u43jio34u8'}));
+  app.dynamicHelpers({flash: function(req, res){return req.flash();}
+                     ,user: function(req, res){return req.session.user;}
+                     ,title: function(req, res){return 'Pigskin Picks';}});
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -35,14 +37,12 @@ function restricted(req, res, next) {
   if (req.session.user) {
     next();
   } else {
-    req.session.error = 'You must be logged in to access that page.';
-    res.redirect('/login/');
+    req.flash('error', 'You must be logged in to see that page');
+    res.redirect('/login');
   }
 }
 
 // Routes
-
-
 app.get('/', routes.index);
 
 app.get('/user', routes.user_new);
@@ -62,6 +62,6 @@ app.get('/results', routes.results);
 app.get('/week', routes.week_new);
 app.post('/week', routes.week_create);
 
-
+mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
 app.listen(process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

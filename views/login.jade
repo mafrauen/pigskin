@@ -1,4 +1,6 @@
-form(method='post')
+if typeof flash != 'undefined' && flash.error
+  p.alert.alert-error.span4= flash.error
+form.span8(method='post')
   label Username:
-    input(name='user[_id]')
+    input.span4(name='user[_id]')
   input.btn(type='submit',value='Log in')

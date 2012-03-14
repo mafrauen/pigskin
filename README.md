@@ -16,10 +16,11 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 
 # TODO
 
-* Create users
 * handle user passwords
 * View existing picks as PDF
 * View game results (scores, covers, etc.) for all weeks
+* Show home teams differently in Pick view
+* Change how picking works (buttons/radios/else?)
 
 Pages
 -----
