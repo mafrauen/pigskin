@@ -16,7 +16,8 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 
 # TODO
 
-* View existing picks as PDF
+* View existing picks as PDF / Better way to show submitted picks for the week
+* What to do when viewing Picks page if already submitted
 * View game results (scores, covers, etc.) for all weeks
 * Show home teams differently in Pick view
 * Change how picking works (buttons/radios/else?)
