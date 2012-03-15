@@ -1,6 +1,6 @@
 h1 Results
 #results
-  table(class='table')
+  table.table
     thead
       tr
         th User
@@ -8,9 +8,12 @@ h1 Results
           th= week.number
         th YTD Score
     tbody
-      each user, i in users
+      each user in users
         tr
           td= user.full_name
-          each entry in user.entries
-            td= entry.score_result
+          each week, w in weeks
+            if (user.entries[w] && user.entries[w].week == w+1)
+              td= user.entries[w].score_result
+            else
+              td -
           td= user.score_total

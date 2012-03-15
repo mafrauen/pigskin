@@ -32,6 +32,7 @@ exports.Entry = mongoose.model('Entry', EntrySchema)
 
 var UserSchema = new Schema({
     _id : String //username
+  , password : String
   , full_name : String
   , entries : [EntrySchema]
   , score_total : Number

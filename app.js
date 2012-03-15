@@ -19,8 +19,8 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({secret:'u43jio34u8'}));
   app.dynamicHelpers({flash: function(req, res){return req.flash();}
-                     ,user: function(req, res){return req.session.user;}
-                     ,title: function(req, res){return 'Pigskin Picks';}});
+                     ,user: function(req, res){return req.session.user;}});
+  app.helpers({title: 'Pigskin Picks'});
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -42,6 +42,14 @@ function restricted(req, res, next) {
   }
 }
 
+function toAdmin(req, res, next) {
+  if (req.session.user.is_admin) {
+    next();
+  } else {
+    res.redirect('/');
+  }
+}
+
 // Routes
 app.get('/', routes.index);
 
@@ -53,14 +61,13 @@ app.post('/login', routes.login);
 
 app.get('/logout', routes.logout);
 
-
 app.get('/picks', restricted, routes.picks);
 app.post('/picks', routes.submit_picks);
 
 app.get('/results', routes.results);
 
-app.get('/week', routes.week_new);
-app.post('/week', routes.week_create);
+app.get('/week', restricted, toAdmin, routes.week_new);
+app.post('/week', restricted, toAdmin, routes.week_create);
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
 app.listen(process.env.PORT || 3000);

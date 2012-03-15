@@ -1,4 +1,5 @@
-var model = require('../model');
+var model = require('../model')
+   ,crypto = require('crypto');
 
 exports.index = function(req, res){
   res.render('index',{});
@@ -32,7 +33,7 @@ exports.results = function(req, res){
 
 exports.submit_picks = function(req, res){
   //TODO need to find user, or can i use user var?
-  model.User.findOne({_id:user._id}, function(err, user) {
+  model.User.findById(req.body.user._id, function(err, user) {
     var entry = req.body.entry;
     entry.score_result = 0;
     entry.score_tiebreaker = 0;
@@ -50,25 +51,33 @@ exports.user_new = function(req, res) {
   res.render('user');
 }
 
+function hash(pass) {
+  var key = 'pigpicks';
+  return crypto.createHmac('sha256', key).update(pass).digest('hex');
+}
+
 // POST new user
 exports.user_create = function(req, res) {
   var newUser = new model.User(req.body.user);
+  newUser.password = hash(req.body.user.password);
   newUser.score_total = 0;
   newUser.is_admin = false;
   newUser.save(function(err) {
-    if (err) console.log(err);
-  });
-  req.session.regenerate(function() {
-    req.session.user = newUser;
-    //TODO may want to redirect somewhere else?
-    res.redirect('/');
+    //TODO possible same username
+    if (err) {
+      res.flash('error', err);
+      res.redirect('back');
+      return;
+    }
+    req.session.regenerate(function() {
+      req.session.user = newUser;
+      res.redirect('/');
+    });
   });
 }
 
 // GET new week
 exports.week_new = function(req, res) {
-  console.log(user);
-  // TODO Validate that logged in user is an admin
   model.Week.count({}, function(err, size) {
     res.render('week', { week_size: size });
   });
@@ -107,7 +116,7 @@ exports.login_form = function(req, res) {
 
 // POST to login page
 exports.login = function(req, res) {
-  model.User.findOne({_id: req.body.user._id}, function(err, user) {
+  model.User.findOne({_id: req.body.user._id, password: hash(req.body.user.password)}, function(err, user) {
     console.log(err);
     console.log(user);
     if (user) {
@@ -116,7 +125,7 @@ exports.login = function(req, res) {
         res.redirect('/');
       });
     } else {
-      req.flash('error', 'Not a valid user');
+      req.flash('error', 'Invalid username/password');
       res.redirect('back');
     }
   });

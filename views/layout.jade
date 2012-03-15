@@ -17,11 +17,13 @@ html
           .nav-collapse.collapse(style='height: 0px;')
             ul.nav
               li: a(href='/') Home
-              li: a(href='/picks/') Make some picks
+              li: a(href='/picks/') Make Some Picks
               li: a(href='/results/') Results
+              if (user && user.is_admin)
+                li: a(href='/week/') Create New Week
             - if (user)
               ul.nav.pull-right
-                li: a(href='/logout/') Logout
+                li.pull-right: a(href='/logout/') Logout
               p.navbar-text.pull-right Logged in as #{user.full_name}
             - else
               ul.nav.pull-right

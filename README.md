@@ -1,8 +1,8 @@
 Recreating the pigskin picks website originally located [here][southslope_url]
 
 Using node.js and express.js.
-Using mongoose.js for data modeling, hosting data on [MongoHQ][mongohq_url]
-Initial css is from [twitter bootstrap][bootstrap_url]
+Using mongoose.js for data modeling, hosting data on [MongoHQ][mongohq_url].
+Initial css is from [twitter bootstrap][bootstrap_url].
 
 Page will be hosted [here][heroku_url] during development, and possibly for production as well.
 
@@ -16,11 +16,13 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 
 # TODO
 
-* handle user passwords
 * View existing picks as PDF
 * View game results (scores, covers, etc.) for all weeks
 * Show home teams differently in Pick view
 * Change how picking works (buttons/radios/else?)
+* If going to Picks page and have to log in, redirect to picks, not home page
+* Score week
+* Result order, sort by column
 
 Pages
 -----
@@ -49,7 +51,7 @@ Models
 * User
   * Full Name
   * username
-  * password?
+  * password
   * Week
      * Week ID (needed to show right/wrong picks. would be linked not embedded. still ok?)
      * Picked Teams

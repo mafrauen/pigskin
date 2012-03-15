@@ -12,12 +12,12 @@ form(method='post',action='/picks')
         each game,i in week.games
           tr
             td
-              label= game.team_favorite
-              input(type='radio',value=game.team_favorite,name='entry[teams]['+i+']')
+              label.radio= game.team_favorite
+                input.radio(type='radio',value=game.team_favorite,name='entry[teams]['+i+']')
             td.spread= game.spread
             td
-              label= game.team_opponent
-              input(type='radio',value=game.team_opponent,name='entry[teams]['+i+']')
+              label.radio= game.team_opponent
+                input.radio(type='radio',value=game.team_opponent,name='entry[teams]['+i+']')
   #tiebreaker
     h2 Tie Breaker
     table.table
