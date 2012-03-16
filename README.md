@@ -24,6 +24,8 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 * If going to Picks page and have to log in, redirect to picks, not home page
 * Score week
 * Result order, sort by column
+* Make sure can't submit picks unless all items picked and tiebreaker entered
+* Results sidebar
 
 Pages
 -----

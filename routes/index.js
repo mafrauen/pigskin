@@ -32,8 +32,7 @@ exports.results = function(req, res){
 };
 
 exports.submit_picks = function(req, res){
-  //TODO need to find user, or can i use user var?
-  model.User.findById(req.body.user._id, function(err, user) {
+  model.User.findById(req.session.user._id, function(err, user) {
     var entry = req.body.entry;
     entry.score_result = 0;
     entry.score_tiebreaker = 0;
@@ -118,7 +117,6 @@ exports.login_form = function(req, res) {
 exports.login = function(req, res) {
   model.User.findOne({_id: req.body.user._id, password: hash(req.body.user.password)}, function(err, user) {
     console.log(err);
-    console.log(user);
     if (user) {
       req.session.regenerate(function() {
         req.session.user = user;

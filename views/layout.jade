@@ -38,16 +38,15 @@ html
             table.table.table-condensed
               thead
                 tr
-                  th Place
                   th Name
                   th Correct
-                  th Payout
+                  th Tiebreaker
               tbody
-                tr
-                  td 1st
-                  td Mike
-                  td 10
-                  td $500
+                each result, r in results
+                  tr
+                    td= result.full_name
+                    td= result.entries[0].score_result
+                    td= result.entries[0].score_tiebreaker
         .span8
           != body
   script(src='/javascripts/jquery.js')
