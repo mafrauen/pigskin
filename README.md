@@ -19,13 +19,14 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 * View existing picks as PDF / Better way to show submitted picks for the week
 * What to do when viewing Picks page if already submitted
 * View game results (scores, covers, etc.) for all weeks
-* Show home teams differently in Pick view
 * Change how picking works (buttons/radios/else?)
 * If going to Picks page and have to log in, redirect to picks, not home page
 * Score week
 * Result order, sort by column
 * Make sure can't submit picks unless all items picked and tiebreaker entered
-* Results sidebar
+* Results sidebar - view: make sure correct entry is shown
+* When going to login page, make sure focus is on text input
+* Make sure picks only count if submitted before games
 
 Pages
 -----

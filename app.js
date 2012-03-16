@@ -89,6 +89,6 @@ app.get('/results', loadResults, routes.results);
 app.get('/week', loadResults, restricted, toAdmin, routes.week_new);
 app.post('/week', loadResults, restricted, toAdmin, routes.week_create);
 
-mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks')
+mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks');
 app.listen(process.env.PORT || 3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
