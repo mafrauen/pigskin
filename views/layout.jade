@@ -21,6 +21,7 @@ html
               li: a(href='/results/') Results
               if (user && user.is_admin)
                 li: a(href='/week/') Create New Week
+                li: a(href='/score/') Score Week
             - if (user)
               ul.nav.pull-right
                 li.pull-right: a(href='/logout/') Logout

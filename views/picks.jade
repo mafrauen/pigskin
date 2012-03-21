@@ -3,11 +3,12 @@ form(method='post',action='/picks')
   input(type='hidden',name='entry[week]',value=week.number)
   #picks
     h2 Week #{week.number}
-    table(class='table')
+    table.table
       thead
         tr
-          th Pick
+          th Favorite
           th Spread
+          th Opponent
       tbody
         each game,i in week.games
           tr
@@ -29,10 +30,10 @@ form(method='post',action='/picks')
           th Score
           th Opponent
       tbody
-          tr
-            td.team= week.tiebreaker_favorite
-            td.score: input.span1(type='text',name='entry[tiebreaker_favorite]')
-            td.spread= week.tiebreaker_spread
-            td.score: input.span1(type='text',name='entry[tiebreaker_opponent]')
-            td.team= week.tiebreaker_opponent
+        tr
+          td.team= week.tiebreaker_favorite
+          td.score: input.span1(type='text',name='entry[tiebreaker_favorite]')
+          td.spread= week.tiebreaker_spread
+          td.score: input.span1(type='text',name='entry[tiebreaker_opponent]')
+          td.team= week.tiebreaker_opponent
   input.btn(type='submit',value='Submit')

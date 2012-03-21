@@ -44,9 +44,8 @@ app.configure('production', function(){
 function loadResults(req, res, next) {
   model.Week.count({}, function(weekErr, size) {
     model.User.where('entries.week').equals(size).run(function (err, users) {
-      // TODO errors?
+      //TODO sort by correct/tiebreaker
       req.results = users;
-      console.log(users);
       next();
     });
   });
@@ -88,6 +87,9 @@ app.get('/results', loadResults, routes.results);
 
 app.get('/week', loadResults, restricted, toAdmin, routes.week_new);
 app.post('/week', loadResults, restricted, toAdmin, routes.week_create);
+
+app.get('/score', loadResults, restricted, toAdmin, routes.score_week);
+app.post('/score', loadResults, restricted, toAdmin, routes.submit_scores);
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks');
 app.listen(process.env.PORT || 3000);
