@@ -12,6 +12,7 @@ exports.Game = mongoose.model('Game', GameSchema)
 var WeekSchema = new Schema({
     _id : String // Year/Week, ex. 2012_1
   , number : Number
+  , has_been_scored : Boolean
   , games : [GameSchema]
   , tiebreaker_favorite : String
   , tiebreaker_opponent : String

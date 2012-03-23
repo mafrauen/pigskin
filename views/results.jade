@@ -11,9 +11,10 @@ h1 Results
       each user in users
         tr
           td= user.full_name
-          each week, w in weeks
-            if (user.entries[w] && user.entries[w].week == w+1)
-              td= user.entries[w].score_result
+          each week in weeks
+            entry = entryForWeek(user, week.number)
+            if (entry)
+              td= entry.score_result
             else
               td -
           td= user.score_total

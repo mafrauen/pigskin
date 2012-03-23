@@ -24,7 +24,7 @@ exports.picks = function(req, res){
 
 exports.results = function(req, res){
   model.Week.find({}).run(function (err, weeks) {
-    model.User.find({}).run(function(err, users) {
+    model.User.find({}).desc('score_total').run(function(err, users) {
       res.render('results', { weeks: weeks,
                               users: users })
     });
@@ -67,7 +67,8 @@ exports.submit_scores = function(req, res) {
       }
     }
 
-    console.log(winningTeams);
+    week.has_been_scored = true;
+    week.save(function(err) {});
 
     model.User.where('entries.week').equals(week.number).run(function (err, users) {
       for (var j = 0; j < users.length; j++) {
@@ -81,6 +82,8 @@ exports.submit_scores = function(req, res) {
         user.score_total += week_score;
         user.save(function(err) {});
       }
+
+      res.redirect('results');
     });
   });
 }

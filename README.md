@@ -20,11 +20,14 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 * What to do when viewing Picks page if already submitted
 * View game results (scores, covers, etc.) for all weeks
 * Change how picking works (buttons/radios/else?)
-* If going to Picks page and have to log in, redirect to picks, not home page
-* Score week
+* If going to Picks page and have to log in, redirect to next page
 * Result order, sort by column
 * Make sure can't submit picks unless all items picked and tiebreaker entered
+  * -> model validation or javascript to enable button?
 * Results sidebar - view: make sure correct entry is shown
+  * through week. say week 2 is coming up, want score for week 1
+  * once week 2 is scored, show that score, before week 3 is available
+  * find highest week where there are user.entries with a score
 * When going to login page, make sure focus is on text input
 * Make sure picks only count if submitted before games
 

@@ -11,9 +11,18 @@ var app = module.exports = express.createServer();
 
 // Configuration
 
-function teamName(team, is_favorite) {
-  if (is_favorite) return team + '*';
+function teamName(team, isFavorite) {
+  if (isFavorite) return team + '*';
   return team;
+}
+
+function entryForWeek(user, week) {
+  for (var w = 0; w < user.entries.length; w++) {
+    if (user.entries[w] && user.entries[w].week*1 === week*1) {
+      return user.entries[w];
+    }
+  }
+  return null;
 }
 
 app.configure(function(){
@@ -28,7 +37,8 @@ app.configure(function(){
                      ,user: function(req, res){return req.session.user;}
                      ,results: function(req, res){return req.results;}});
   app.helpers({title: 'Pigskin Picks'
-              ,teamName: teamName });
+              ,teamName: teamName
+              ,entryForWeek: entryForWeek });
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -42,15 +52,22 @@ app.configure('production', function(){
 });
 
 function loadResults(req, res, next) {
-  model.Week.count({}, function(weekErr, size) {
-    model.User.where('entries.week').equals(size).run(function (err, users) {
-      //TODO sort by correct/tiebreaker
+  req.results = [];
+
+  model.Week.where('has_been_scored').equals(true)
+            .desc('number').count(function(weekErr, week) {
+    if (!week) {
+      next();
+      return;
+    }
+
+    model.User.where('entries.week').equals(week)
+              .run(function (err, users) {
       req.results = users;
       next();
     });
   });
 }
-
 
 function restricted(req, res, next) {
   if (req.session.user) {
