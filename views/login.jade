@@ -1,6 +1,6 @@
 if typeof flash != 'undefined' && flash.error
-  p.alert.alert-error.span4= flash.error
-form.span8(method='post')
+  p.alert.alert-error= flash.error
+form(method='post')
   label Username:
     input.span4(name='user[_id]')
   label Password:

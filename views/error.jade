@@ -1,0 +1,38 @@
+!!!
+html
+  head
+    title= title
+    meta(name='viewport',content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.min.css')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse',data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='/') Pigskin Picks
+          .nav-collapse.collapse(style='height: 0px;')
+            ul.nav
+              li: a(href='/') Home
+              li: a(href='/picks') Make Some Picks
+              li: a(href='/results') Results
+              if (user && user.is_admin)
+                li: a(href='/week') Create New Week
+                li: a(href='/score') Score Week
+            - if (user)
+              ul.nav.pull-right
+                li.pull-right: a(href='/logout') Logout
+              p.navbar-text.pull-right Logged in as #{user.full_name}
+            - else
+              ul.nav.pull-right
+                li: a(href='/login') Login
+                li: a(href='/user') Create User
+    .container-fluid
+      .row-fluid
+        block content
+  script(src='/javascripts/jquery.js')
+  script(src='/javascripts/bootstrap.min.js')

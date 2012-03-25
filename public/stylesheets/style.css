@@ -1,9 +1,6 @@
 body {
   padding-top: 60px;
 }
-.navbar .brand {
-  float: right;
-}
 .btn-group .btn {
   text-shadow: none;
   color: black;

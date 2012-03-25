@@ -28,6 +28,7 @@ function entryForWeek(user, week) {
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.favicon());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.compiler({ src: __dirname + '/public', enable: ['less']}));
@@ -107,6 +108,11 @@ app.post('/week', loadResults, restricted, toAdmin, routes.week_create);
 
 app.get('/score', loadResults, restricted, toAdmin, routes.score_week);
 app.post('/score', loadResults, restricted, toAdmin, routes.submit_scores);
+
+app.use(function(req, res, next) {
+  res.status(404);
+  res.render('404', { layout : false });
+});
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks');
 app.listen(process.env.PORT || 3000);
