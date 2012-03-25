@@ -13,6 +13,7 @@ function user_has_entry_for_week(user, week) {
 };
 
 exports.picks = function(req, res){
+  console.log(req.session.user);
   model.Week.findOne({}).desc('number').run(function(err, week) {
     if (user_has_entry_for_week(req.session.user, week)) {
       console.log('picked');
@@ -40,9 +41,13 @@ exports.submit_picks = function(req, res){
     user.save(function(err) {
       // TODO this may have errors for not enough picks
       if (err) console.log(err);
+
+      req.session.regenerate(function() {
+        req.session.user = user;
+        res.redirect('back');
+      });
     });
   });
-  res.redirect('back');
 };
 
 exports.score_week = function(req, res) {

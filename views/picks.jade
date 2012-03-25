@@ -1,4 +1,5 @@
 h1 Picks for #{user.full_name}
+entry = entryForWeek(user, week.number)
 form(method='post',action='/picks')
   input(type='hidden',name='entry[week]',value=week.number)
   #picks
@@ -11,14 +12,18 @@ form(method='post',action='/picks')
           th Opponent
       tbody
         each game,i in week.games
+          fav = game.team_favorite
+          opp = game.team_opponent
           tr
             td
               label.radio= teamName(game.team_favorite,game.is_favorite_home)
-                input.radio(type='radio',value=game.team_favorite,name='entry[teams]['+i+']')
+                input.radio(type='radio',value=fav,name='entry[teams]['+i+']',
+                  disabled=entry, checked=isTeamSelected(fav, entry))
             td.spread= game.spread
             td
               label.radio= teamName(game.team_opponent,!game.is_favorite_home)
-                input.radio(type='radio',value=game.team_opponent,name='entry[teams]['+i+']')
+                input.radio(type='radio',value=opp,name='entry[teams]['+i+']',
+                  disabled=entry, checked=isTeamSelected(opp, entry))
   #tiebreaker
     h2 Tie Breaker
     table.table
@@ -36,4 +41,4 @@ form(method='post',action='/picks')
           td.spread= week.tiebreaker_spread
           td.score: input.span1(type='number',name='entry[tiebreaker_opponent]')
           td.team= week.tiebreaker_opponent
-  input.btn(type='submit',value='Submit')
+  input.btn(type='submit',value='Submit',disabled=entry)

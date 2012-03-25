@@ -28,10 +28,9 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 * When going to login page, make sure focus is on text input
 * Make sure picks only count if submitted before games
 * iOS
-  * Make sure text fields are shortened to fit (eg login page)
   * Rotation (may be bootstrap issue)
-  * Put brand name back on left side of nav
   * Text input for numbers
+  * Tables are probably not best option for iPhone viewing
 * Should usernames be case sensitive?
 
 Pages

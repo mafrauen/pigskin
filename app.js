@@ -12,6 +12,7 @@ var app = module.exports = express.createServer();
 // Configuration
 
 function teamName(team, isFavorite) {
+  if (team == '') return team;
   if (isFavorite) return team + '*';
   return team;
 }
@@ -23,6 +24,14 @@ function entryForWeek(user, week) {
     }
   }
   return null;
+}
+
+function isTeamSelected(team, entry) {
+  if (!entry) return false;
+  function hasTeam(entry, i, a) {
+    return entry == team;
+  };
+  return entry.teams.some(hasTeam);
 }
 
 app.configure(function(){
@@ -39,7 +48,8 @@ app.configure(function(){
                      ,results: function(req, res){return req.results;}});
   app.helpers({title: 'Pigskin Picks'
               ,teamName: teamName
-              ,entryForWeek: entryForWeek });
+              ,entryForWeek: entryForWeek
+              ,isTeamSelected: isTeamSelected });
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });

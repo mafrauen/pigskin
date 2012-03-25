@@ -1,5 +1,16 @@
 h1 Results
 #results
+  //ul.nav
+    each user in users
+      li= user.full_name
+        ul.nav.nav-tabs
+          each week,w in weeks
+            entry = entryForWeek(user, week.number)
+            if (entry)
+              li Week #{w+1}: #{entry.score_result}
+            else
+              li Week #{w+1}: -
+          li YTD Score: #{user.score_total}
   table.table
     thead
       tr
