@@ -14,11 +14,11 @@ form(method='post')
         tr
           td= i
           td
-            input.span2(name='week[team_favorite]')
+            input.span2(type='text',name='week[team_favorite]')
           td
-            input.span1(name='week[spread]')
+            input.span1(type='number',name='week[spread]')
           td
-            input.span2(name='week[team_opponent]')
+            input.span2(type='text',name='week[team_opponent]')
           td
             input(type='checkbox', name='week[home_team]', value=i)
       - }
@@ -35,11 +35,11 @@ form(method='post')
     tbody
       tr
         td
-          input.span2(name='week[tiebreaker_favorite]')
+          input.span2(type='text',name='week[tiebreaker_favorite]')
         td
-          input.span1(name='week[tiebreaker_spread]')
+          input.span1(type='nubmber',name='week[tiebreaker_spread]')
         td
-          input.span2(name='week[tiebreaker_opponent]')
+          input.span2(type='text',name='week[tiebreaker_opponent]')
         td
           input(type='checkbox', name='week[tiebreaker_home_favorite]', value=true)
 

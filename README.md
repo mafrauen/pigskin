@@ -16,7 +16,6 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 
 # TODO
 
-* 404 page
 * What to do when viewing Picks page if already submitted
 * View existing picks as PDF / Better way to show submitted picks for the week
 * View game results (scores, covers, etc.) for all weeks
@@ -32,6 +31,7 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
   * Make sure text fields are shortened to fit (eg login page)
   * Rotation (may be bootstrap issue)
   * Put brand name back on left side of nav
+  * Text input for numbers
 * Should usernames be case sensitive?
 
 Pages

@@ -32,8 +32,8 @@ form(method='post',action='/picks')
       tbody
         tr
           td.team= week.tiebreaker_favorite
-          td.score: input.span1(type='text',name='entry[tiebreaker_favorite]')
+          td.score: input.span1(type='number',name='entry[tiebreaker_favorite]')
           td.spread= week.tiebreaker_spread
-          td.score: input.span1(type='text',name='entry[tiebreaker_opponent]')
+          td.score: input.span1(type='number',name='entry[tiebreaker_opponent]')
           td.team= week.tiebreaker_opponent
   input.btn(type='submit',value='Submit')
