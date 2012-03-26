@@ -73,7 +73,7 @@ function loadResults(req, res, next) {
     }
 
     model.User.where('entries.week').equals(week)
-              .run(function (err, users) {
+              limit(5).run(function (err, users) {
       req.results = users;
       next();
     });

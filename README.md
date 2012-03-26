@@ -29,9 +29,7 @@ Page will be hosted [here][heroku_url] during development, and possibly for prod
 * Make sure picks only count if submitted before games
 * iOS
   * Rotation (may be bootstrap issue)
-  * Text input for numbers
   * Tables are probably not best option for iPhone viewing
-* Should usernames be case sensitive?
 
 Pages
 -----
