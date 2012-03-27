@@ -13,13 +13,17 @@ function userHasEntryForWeek(user, week) {
 };
 
 exports.picks = function(req, res){
-  console.log(req.session.user);
   model.Week.findOne({}).desc('number').run(function(err, week) {
     if (userHasEntryForWeek(req.session.user, week)) {
       console.log('picked');
     };
 
-    res.render('picks', { week: week })
+    if (week) {
+      res.render('picks', { week: week })
+    } else {
+      req.flash('error', 'No games are available to pick yet. Check back later.');
+      res.redirect('/');
+    }
   });
 };
 
