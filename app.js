@@ -65,7 +65,7 @@ app.configure('production', function(){
 function loadResults(req, res, next) {
   req.results = [];
 
-  model.Week.where('has_been_scored').equals(true)
+  model.Week.where('hasBeenScored').equals(true)
             .desc('number').count(function(weekErr, week) {
     if (!week) {
       next();
@@ -90,7 +90,7 @@ function restricted(req, res, next) {
 }
 
 function toAdmin(req, res, next) {
-  if (req.session.user.is_admin) {
+  if (req.session.user.isAdmin) {
     next();
   } else {
     res.redirect('/');
@@ -100,24 +100,24 @@ function toAdmin(req, res, next) {
 // Routes
 app.get('/', loadResults, routes.index);
 
-app.get('/user', loadResults, routes.user_new);
-app.post('/user', loadResults, routes.user_create);
+app.get('/user', loadResults, routes.userNew);
+app.post('/user', loadResults, routes.userCreate);
 
-app.get('/login', loadResults, routes.login_form);
+app.get('/login', loadResults, routes.loginForm);
 app.post('/login', loadResults, routes.login);
 
 app.get('/logout', loadResults, routes.logout);
 
 app.get('/picks', loadResults, restricted, routes.picks);
-app.post('/picks', loadResults, routes.submit_picks);
+app.post('/picks', loadResults, routes.submitPicks);
 
 app.get('/results', loadResults, routes.results);
 
-app.get('/week', loadResults, restricted, toAdmin, routes.week_new);
-app.post('/week', loadResults, restricted, toAdmin, routes.week_create);
+app.get('/week', loadResults, restricted, toAdmin, routes.weekNew);
+app.post('/week', loadResults, restricted, toAdmin, routes.weekCreate);
 
-app.get('/score', loadResults, restricted, toAdmin, routes.score_week);
-app.post('/score', loadResults, restricted, toAdmin, routes.submit_scores);
+app.get('/score', loadResults, restricted, toAdmin, routes.scoreWeek);
+app.post('/score', loadResults, restricted, toAdmin, routes.submitScores);
 
 app.use(function(req, res, next) {
   res.status(404);

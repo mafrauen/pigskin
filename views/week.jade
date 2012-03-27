@@ -1,5 +1,5 @@
 h1= title
-h2 Create week #{week_size + 1}
+h2 Create week #{weekSize + 1}
 form(method='post')
   table.table.table-condensed
     thead
@@ -14,13 +14,13 @@ form(method='post')
         tr
           td= i
           td
-            input.span2(type='text',name='week[team_favorite]')
+            input.span2(type='text',name='week[teamFavorite]')
           td
             input.span1(type='number',name='week[spread]')
           td
-            input.span2(type='text',name='week[team_opponent]')
+            input.span2(type='text',name='week[teamOpponent]')
           td
-            input(type='checkbox', name='week[home_team]', value=i)
+            input(type='checkbox', name='week[homeTeam]', value=i)
       - }
 
   table.table.table-condensed
@@ -35,13 +35,13 @@ form(method='post')
     tbody
       tr
         td
-          input.span2(type='text',name='week[tiebreaker_favorite]')
+          input.span2(type='text',name='week[tiebreakerFavorite]')
         td
-          input.span1(type='nubmber',name='week[tiebreaker_spread]')
+          input.span1(type='nubmber',name='week[tiebreakerSpread]')
         td
-          input.span2(type='text',name='week[tiebreaker_opponent]')
+          input.span2(type='text',name='week[tiebreakerOpponent]')
         td
-          input(type='checkbox', name='week[tiebreaker_home_favorite]', value=true)
+          input(type='checkbox', name='week[tiebreakerHomeFavorite]', value=true)
 
-  input(type='hidden',name='week[number]',value=week_size + 1)
+  input(type='hidden',name='week[number]',value=weekSize + 1)
   input.btn(type='submit',value='Submit')

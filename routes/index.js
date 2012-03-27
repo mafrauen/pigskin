@@ -5,7 +5,7 @@ exports.index = function(req, res){
   res.render('index',{});
 };
 
-function user_has_entry_for_week(user, week) {
+function userHasEntryForWeek(user, week) {
   function entryIsForWeek(entry, i, a) {
     return entry.week*1 == week.number*1;
   }
@@ -15,7 +15,7 @@ function user_has_entry_for_week(user, week) {
 exports.picks = function(req, res){
   console.log(req.session.user);
   model.Week.findOne({}).desc('number').run(function(err, week) {
-    if (user_has_entry_for_week(req.session.user, week)) {
+    if (userHasEntryForWeek(req.session.user, week)) {
       console.log('picked');
     };
 
@@ -25,18 +25,18 @@ exports.picks = function(req, res){
 
 exports.results = function(req, res){
   model.Week.find({}).run(function (err, weeks) {
-    model.User.find({}).desc('score_total').run(function(err, users) {
+    model.User.find({}).desc('scoreTotal').run(function(err, users) {
       res.render('results', { weeks: weeks,
                               users: users })
     });
   });
 };
 
-exports.submit_picks = function(req, res){
+exports.submitPicks = function(req, res){
   model.User.findById(req.session.user._id, function(err, user) {
     var entry = req.body.entry;
-    entry.score_result = 0;
-    entry.score_tiebreaker = 0;
+    entry.scoreResult = 0;
+    entry.scoreTiebreaker = 0;
     user.entries.push(entry);
     user.save(function(err) {
       // TODO this may have errors for not enough picks
@@ -50,13 +50,13 @@ exports.submit_picks = function(req, res){
   });
 };
 
-exports.score_week = function(req, res) {
+exports.scoreWeek = function(req, res) {
   model.Week.findOne({}).desc('number').run(function(err, week) {
     res.render('score', { week: week });
   });
 };
 
-exports.submit_scores = function(req, res) {
+exports.submitScores = function(req, res) {
   model.Week.findOne({}).desc('number').run(function(err, week) {
     var winningTeams = [];
 
@@ -66,13 +66,13 @@ exports.submit_scores = function(req, res) {
       var spread = week.games[i].spread;
 
       if (favScore > oppScore + spread) {
-        winningTeams.push(week.games[i].team_favorite);
+        winningTeams.push(week.games[i].teamFavorite);
       } else if (favScore < oppScore + spread) {
-        winningTeams.push(week.games[i].team_opponent);
+        winningTeams.push(week.games[i].teamOpponent);
       }
     }
 
-    week.has_been_scored = true;
+    week.hasBeenScored = true;
     week.save(function(err) {});
 
     model.User.where('entries.week').equals(week.number).run(function (err, users) {
@@ -81,10 +81,10 @@ exports.submit_scores = function(req, res) {
 
         var userEntry = getUserEntry(user, week.number);
         console.log('entry = ' + userEntry);
-        var week_score = getIntersect(winningTeams, userEntry.teams).length;
-        console.log('score = ' + week_score);
-        userEntry.score_result = week_score;
-        user.score_total += week_score;
+        var weekScore = getIntersect(winningTeams, userEntry.teams).length;
+        console.log('score = ' + weekScore);
+        userEntry.scoreResult = weekScore;
+        user.scoreTotal += weekScore;
         user.save(function(err) {});
       }
 
@@ -117,7 +117,7 @@ function getIntersect(arr1, arr2) {
 }
 
 // GET new user
-exports.user_new = function(req, res) {
+exports.userNew = function(req, res) {
   res.render('user');
 }
 
@@ -127,11 +127,11 @@ function hash(pass) {
 }
 
 // POST new user
-exports.user_create = function(req, res) {
+exports.userCreate = function(req, res) {
   var newUser = new model.User(req.body.user);
   newUser.password = hash(req.body.user.password);
-  newUser.score_total = 0;
-  newUser.is_admin = false;
+  newUser.scoreTotal = 0;
+  newUser.isAdmin = false;
   newUser.save(function(err) {
     //TODO possible same username
     if (err) {
@@ -147,14 +147,14 @@ exports.user_create = function(req, res) {
 }
 
 // GET new week
-exports.week_new = function(req, res) {
+exports.weekNew = function(req, res) {
   model.Week.count({}, function(err, size) {
-    res.render('week', { week_size: size });
+    res.render('week', { weekSize: size });
   });
 }
 
 // POST new week
-exports.week_create = function(req, res) {
+exports.weekCreate = function(req, res) {
   var week = new model.Week();
   var number = req.body.week.number;
   week._id = '2012_'+number;
@@ -162,17 +162,17 @@ exports.week_create = function(req, res) {
 
   for (var i = 0; i< 10; i++) {
     var game = {};
-    game.team_favorite = req.body.week.team_favorite[i];
-    game.team_opponent = req.body.week.team_opponent[i];
+    game.teamFavorite = req.body.week.teamFavorite[i];
+    game.teamOpponent = req.body.week.teamOpponent[i];
     game.spread = req.body.week.spread[i];
-    game.is_favorite_home = req.body.week.home_team.indexOf((i+1).toString()) >= 0;
+    game.isFavoriteHome = req.body.week.homeTeam.indexOf((i+1).toString()) >= 0;
     week.games.push(game);
   }
 
-  week.tiebreaker_favorite = req.body.week.tiebreaker_favorite;
-  week.tiebreaker_opponent = req.body.week.tiebreaker_opponent;
-  week.tiebreaker_spread = req.body.week.tiebreaker_spread;
-  week.tiebreaker_home_favorite = req.body.week.tiebreaker_home_favorite;
+  week.tiebreakerFavorite = req.body.week.tiebreakerFavorite;
+  week.tiebreakerOpponent = req.body.week.tiebreakerOpponent;
+  week.tiebreakerSpread = req.body.week.tiebreakerSpread;
+  week.tiebreakerHomeFavorite = req.body.week.tiebreakerHomeFavorite;
 
   week.save(function(err) {});
 
@@ -180,7 +180,7 @@ exports.week_create = function(req, res) {
 }
 
 // GET login form
-exports.login_form = function(req, res) {
+exports.loginForm = function(req, res) {
   res.render('login');
 }
 

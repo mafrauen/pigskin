@@ -2,15 +2,15 @@ h1 Results
 #results
   //ul.nav
     each user in users
-      li= user.full_name
+      li= user.fullName
         ul.nav.nav-tabs
           each week,w in weeks
             entry = entryForWeek(user, week.number)
             if (entry)
-              li Week #{w+1}: #{entry.score_result}
+              li Week #{w+1}: #{entry.scoreResult}
             else
               li Week #{w+1}: -
-          li YTD Score: #{user.score_total}
+          li YTD Score: #{user.scoreTotal}
   table.table
     thead
       tr
@@ -21,11 +21,11 @@ h1 Results
     tbody
       each user in users
         tr
-          td= user.full_name
+          td= user.fullName
           each week in weeks
             entry = entryForWeek(user, week.number)
             if (entry)
-              td= entry.score_result
+              td= entry.scoreResult
             else
               td -
-          td= user.score_total
+          td= user.scoreTotal

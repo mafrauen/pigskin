@@ -20,13 +20,13 @@ html
               li: a(href='/') Home
               li: a(href='/picks') Make Some Picks
               li: a(href='/results') Results
-              if (user && user.is_admin)
+              if (user && user.isAdmin)
                 li: a(href='/week') Create New Week
                 li: a(href='/score') Score Week
             - if (user)
               ul.nav.pull-right
                 li.pull-right: a(href='/logout') Logout
-              p.navbar-text.pull-right Logged in as #{user.full_name}
+              p.navbar-text.pull-right Logged in as #{user.fullName}
             - else
               ul.nav.pull-right
                 li: a(href='/login') Login

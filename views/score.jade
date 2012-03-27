@@ -10,10 +10,10 @@ form(method='post',action='/score')
     tbody
       each game,i in week.games
         tr
-          td= teamName(game.team_favorite,game.is_favorite_home)
+          td= teamName(game.teamFavorite,game.isFavoriteHome)
           td: input.span1(type='number',name='scores[favorite]['+i+']')
           td: input.span1(type='number',name='scores[opponent]['+i+']')
-          td= teamName(game.team_opponent,!game.is_favorite_home)
+          td= teamName(game.teamOpponent,!game.isFavoriteHome)
   h2 Tie Breaker
   table.table
     thead
@@ -24,8 +24,8 @@ form(method='post',action='/score')
         th Opponent
     tbody
       tr
-        td.team= week.tiebreaker_favorite
-        td.score: input.span1(type='number',name='scores[tiebreaker_favorite]')
-        td.score: input.span1(type='number',name='scores[tiebreaker_opponent]')
-        td.team= week.tiebreaker_opponent
+        td.team= week.tiebreakerFavorite
+        td.score: input.span1(type='number',name='scores[tiebreakerFavorite]')
+        td.score: input.span1(type='number',name='scores[tiebreakerOpponent]')
+        td.team= week.tiebreakerOpponent
   input.btn(type='submit',value='Submit')
