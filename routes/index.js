@@ -28,11 +28,22 @@ exports.picks = function(req, res){
 };
 
 exports.results = function(req, res){
-  model.Week.find({}).run(function (err, weeks) {
-    model.User.find({}).desc('scoreTotal').run(function(err, users) {
+  var loadPage = function(weeks, users) {
+    if (weeks && users) {
       res.render('results', { weeks: weeks,
                               users: users })
-    });
+    }
+  }
+
+  var loadedWeeks;
+  var loadedUsers;
+  model.Week.find({}).run(function (err, weeks) {
+    loadedWeeks = weeks;
+    loadPage(loadedWeeks,loadedUsers);
+  });
+  model.User.find({}).desc('scoreTotal').run(function(err, users) {
+    loadedUsers = users;
+    loadPage(loadedWeeks,loadedUsers);
   });
 };
 
@@ -62,21 +73,23 @@ exports.scoreWeek = function(req, res) {
 
 exports.submitScores = function(req, res) {
   model.Week.findOne({}).desc('number').run(function(err, week) {
+
     var winningTeams = [];
-
     for (var i = 0; i< 10; i++) {
-      var favScore = req.body.scores.favorite[i];
-      var oppScore = req.body.scores.opponent[i];
-      var spread = week.games[i].spread;
+      var game = week.games[i];
+      game.scoreFav = req.body.scores.favorite[i];
+      game.scoreOpp = req.body.scores.opponent[i];
 
-      if (favScore > oppScore + spread) {
-        winningTeams.push(week.games[i].teamFavorite);
-      } else if (favScore < oppScore + spread) {
-        winningTeams.push(week.games[i].teamOpponent);
+      if (game.scoreFav > game.scoreOpp + game.spread) {
+        winningTeams.push(game.teamFavorite);
+      } else if (game.scoreFav < game.scoreOpp + game.spread) {
+        winningTeams.push(game.teamOpponent);
       }
     }
 
     week.hasBeenScored = true;
+    week.scoreTbFav = req.body.scores.tiebreakerFavorite
+    week.scoreTbOpp = req.body.scores.tiebreakerOpponent
     week.save(function(err) {});
 
     model.User.where('entries.week').equals(week.number).run(function (err, users) {
@@ -84,15 +97,20 @@ exports.submitScores = function(req, res) {
         var user = users[j];
 
         var userEntry = getUserEntry(user, week.number);
-        console.log('entry = ' + userEntry);
-        var weekScore = getIntersect(winningTeams, userEntry.teams).length;
-        console.log('score = ' + weekScore);
-        userEntry.scoreResult = weekScore;
-        user.scoreTotal += weekScore;
-        user.save(function(err) {});
+        userEntry.scoreResult = getIntersect(winningTeams, userEntry.teams).length;
+
+        user.scoreTotal = user.entries.reduce(function(prev, curr, i, a) {
+          return prev + curr.scoreResult;
+        }, 0);
+
+        var tbFav = Math.abs(week.scoreTbFav - userEntry.tiebreakerFavorite);
+        var tbOpp = Math.abs(week.scoreTbOpp - userEntry.tiebreakerOpponent);
+        userEntry.scoreTiebreaker = tbFav + tbOpp;
+
+        user.save(function(err) {console.log(err);});
       }
 
-      res.redirect('results');
+      res.redirect('/results');
     });
   });
 }

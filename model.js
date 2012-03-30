@@ -6,6 +6,8 @@ var GameSchema = new Schema({
   , teamOpponent : String
   , spread : Number
   , isFavoriteHome : Boolean
+  , scoreFav : Number
+  , scoreOpp : Number
 });
 exports.Game = mongoose.model('Game', GameSchema)
 
@@ -17,6 +19,8 @@ var WeekSchema = new Schema({
   , tiebreakerFavorite : String
   , tiebreakerOpponent : String
   , tiebreakerSpread : Number
+  , scoreTbFav : Number
+  , scoreTbOpp : Number
   , tiebreakerHomeFavorite : Boolean
 });
 exports.Week = mongoose.model('Week', WeekSchema)

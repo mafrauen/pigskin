@@ -7,7 +7,8 @@ var express = require('express')
   , model = require('./model')
   , routes = require('./routes');
 
-var app = module.exports = express.createServer();
+var app = module.exports = express.createServer()
+  , io = require('socket.io').listen(app);
 
 // Configuration
 
@@ -73,7 +74,7 @@ function loadResults(req, res, next) {
     }
 
     model.User.where('entries.week').equals(week)
-              limit(5).run(function (err, users) {
+              .limit(5).run(function (err, users) {
       req.results = users;
       next();
     });
@@ -122,6 +123,16 @@ app.post('/score', loadResults, restricted, toAdmin, routes.submitScores);
 app.use(function(req, res, next) {
   res.status(404);
   res.render('404', { layout : false });
+});
+
+io.sockets.on('connection', function(socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function(data) {
+    console.log(data);
+  });
+  socket.on('refresh', function(data) {
+    socket.broadcast.emit('refresh', data);
+  });
 });
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks');

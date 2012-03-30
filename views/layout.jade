@@ -52,6 +52,7 @@ html
         .span8
           if typeof flash != 'undefined' && flash.error
             p.alert.alert-error= flash.error
+          script(src='/socket.io/socket.io.js')
           != body
   script(src='/javascripts/jquery.js')
   script(src='/javascripts/bootstrap.min.js')
