@@ -7,6 +7,32 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.min.css')
   body
+    script(src='/socket.io/socket.io.js')
+    script
+      var latestResults = function(data) {
+        console.log('latestResults');
+        var results = data.results;
+        var value = '<table class="table table-condensed">';
+        value += '<thead><tr>'
+        value += '<th>Name</th>';
+        value += '<th>Correct</th>';
+        value += '<th>Tiebreaker</th>';
+        value += '</tr></thead>';
+        value += '<tbody>';
+        for (var r = 0; r < results.length; r++) {
+          value += '<tr>';
+          value += '<td>' + results[r].fullName + '</td>';
+          value += '<td>' + results[r].entries[0].scoreResult + '</td>';
+          value += '<td>' + results[r].entries[0].scoreTiebreaker + '</td>';
+          value += '</tr>';
+        }
+        value += '</tbody></table>';
+
+        document.getElementById('latest').innerHTML = value;
+      }
+
+      var socket = io.connect();
+      socket.on('latestChange', latestResults);
     .navbar.navbar-fixed-top
       .navbar-inner
         .container-fluid
@@ -37,22 +63,22 @@ html
           img(src='/images/iowa.jpg', alt='Iowa Hawkeyes')
           .well
             h3 Latest Results
-            table.table.table-condensed
-              thead
-                tr
-                  th Name
-                  th Correct
-                  th Tiebreaker
-              tbody
-                each result, r in results
+            #latest
+              table.table.table-condensed
+                thead
                   tr
-                    td= result.fullName
-                    td= result.entries[0].scoreResult
-                    td= result.entries[0].scoreTiebreaker
+                    th Name
+                    th Correct
+                    th Tiebreaker
+                tbody
+                  each result, r in results
+                    tr
+                      td= result.fullName
+                      td= result.entries[0].scoreResult
+                      td= result.entries[0].scoreTiebreaker
         .span8
           if typeof flash != 'undefined' && flash.error
             p.alert.alert-error= flash.error
-          script(src='/socket.io/socket.io.js')
           != body
   script(src='/javascripts/jquery.js')
   script(src='/javascripts/bootstrap.min.js')

@@ -1,11 +1,16 @@
 script
   var socket = io.connect();
   socket.on('connect', function(data) {
+    console.log(data);
     console.log('this is connected');
     socket.emit('refresh', { some: 'stuff' });
   });
   socket.on('refresh', function(data) {
     console.log('is refreshed');
+  });
+  socket.on('test', function(data) {
+    console.log(data);
+    document.getElementById('data').innerHTML = 'this was sent from test';
   });
   socket.on('news', function(data) {
     console.log(data);
@@ -13,6 +18,7 @@ script
     document.getElementById('temp').innerHTML = 'hello world';
   });
 #temp
+#data
 #intro
   h1 Pigskin Picks
   img(src='http://hawkcentral.com/wp-content/gallery/iowa-nebraska-game-in-2011/006iow-1117-ia-vs-nebraska.jpg', alt='Wisconsin Game', width='400',size='300')

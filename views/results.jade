@@ -1,9 +1,43 @@
+script
+  var entryForWeek = function(user, week) {
+    for (var w = 0; w < user.entries.length; w++) {
+      if (user.entries[w] && user.entries[w].week*1 === week*1) {
+        return user.entries[w];
+      }
+    }
+    return null;
+  }
+  var showScores = function(data) {
+    var weeks = data.weeks;
+    var users = data.users;
+    var value = '<ul>';
+    for (var u = 0; u < users.length; u++) {
+      value += '<li>' + users[u].fullName + '</li>';
+      value += '<ul>';
+      for (var w = 0; w < weeks.length; w++) {
+        var entry = entryForWeek(users[u], weeks[w].number);
+        if (entry) {
+          value += '<li>Week ' + (w+1) + ': ' + entry.scoreResult + '</li>';
+        } else {
+          value += '<li>Week ' + (w+1) + ' -</li>';
+        }
+      }
+      value += '<li>YTD Score: ' + users[u].scoreTotal + '</li>';
+      value += '</ul>';
+    }
+    value += '</ul>';
+
+    document.getElementById('results').innerHTML = value;
+  };
+
+  var socket = io.connect();
+  socket.on('scoreChange', showScores);
 h1 Results
 #results
-  //ul.nav
+  ul.nav
     each user in users
       li= user.fullName
-        ul.nav.nav-tabs
+        ul.nav
           each week,w in weeks
             entry = entryForWeek(user, week.number)
             if (entry)
@@ -11,6 +45,7 @@ h1 Results
             else
               li Week #{w+1}: -
           li YTD Score: #{user.scoreTotal}
+#table
   table.table
     thead
       tr

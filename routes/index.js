@@ -14,10 +14,6 @@ function userHasEntryForWeek(user, week) {
 
 exports.picks = function(req, res){
   model.Week.findOne({}).desc('number').run(function(err, week) {
-    if (userHasEntryForWeek(req.session.user, week)) {
-      console.log('picked');
-    };
-
     if (week) {
       res.render('picks', { week: week })
     } else {
@@ -71,46 +67,89 @@ exports.scoreWeek = function(req, res) {
   });
 };
 
-exports.submitScores = function(req, res) {
-  model.Week.findOne({}).desc('number').run(function(err, week) {
+exports.submitScores = function(socket) {
+  return function(req, res) {
+    model.Week.findOne({}).desc('number').run(function(err, week) {
 
-    var winningTeams = [];
-    for (var i = 0; i< 10; i++) {
-      var game = week.games[i];
-      game.scoreFav = req.body.scores.favorite[i];
-      game.scoreOpp = req.body.scores.opponent[i];
+      var winningTeams = [];
+      for (var i = 0; i< 10; i++) {
+        var game = week.games[i];
+        game.scoreFav = req.body.scores.favorite[i];
+        game.scoreOpp = req.body.scores.opponent[i];
 
-      if (game.scoreFav > game.scoreOpp + game.spread) {
-        winningTeams.push(game.teamFavorite);
-      } else if (game.scoreFav < game.scoreOpp + game.spread) {
-        winningTeams.push(game.teamOpponent);
+        if (game.scoreFav > game.scoreOpp + game.spread) {
+          winningTeams.push(game.teamFavorite);
+        } else if (game.scoreFav < game.scoreOpp + game.spread) {
+          winningTeams.push(game.teamOpponent);
+        }
       }
+
+      week.hasBeenScored = true;
+      week.scoreTbFav = req.body.scores.tiebreakerFavorite
+      week.scoreTbOpp = req.body.scores.tiebreakerOpponent
+      week.save(function(err) {});
+
+      model.User.where('entries.week').equals(week.number).run(function (err, users) {
+        var usersSaved = 0;
+        for (var j = 0; j < users.length; j++) {
+          var user = users[j];
+
+          var userEntry = getUserEntry(user, week.number);
+          userEntry.scoreResult = getIntersect(winningTeams, userEntry.teams).length;
+
+          user.scoreTotal = user.entries.reduce(function(prev, curr, i, a) {
+            return prev + curr.scoreResult;
+          }, 0);
+
+          var tbFav = Math.abs(week.scoreTbFav - userEntry.tiebreakerFavorite);
+          var tbOpp = Math.abs(week.scoreTbOpp - userEntry.tiebreakerOpponent);
+          userEntry.scoreTiebreaker = tbFav + tbOpp;
+
+          user.save(function(err) {
+            usersSaved++;
+            if (usersSaved == users.length) {
+              reloadScores(socket);
+              reloadLatestResults(socket);
+            }
+          });
+        }
+
+        res.redirect('/results');
+      });
+    });
+  }
+}
+
+var reloadScores = function(socket) {
+  var loadPage = function(weeks, users) {
+    if (weeks && users) {
+      socket.emit('scoreChange', { weeks: weeks
+                                 , users: users })
+    }
+  }
+
+  var loadedWeeks;
+  var loadedUsers;
+  model.Week.find({}).run(function (err, weeks) {
+    loadedWeeks = weeks;
+    loadPage(loadedWeeks,loadedUsers);
+  });
+  model.User.find({}).desc('scoreTotal').run(function(err, users) {
+    loadedUsers = users;
+    loadPage(loadedWeeks,loadedUsers);
+  });
+};
+
+var reloadLatestResults = function(socket) {
+  model.Week.where('hasBeenScored').equals(true)
+            .desc('number').count(function(weekErr, week) {
+    if (!week) {
+      return;
     }
 
-    week.hasBeenScored = true;
-    week.scoreTbFav = req.body.scores.tiebreakerFavorite
-    week.scoreTbOpp = req.body.scores.tiebreakerOpponent
-    week.save(function(err) {});
-
-    model.User.where('entries.week').equals(week.number).run(function (err, users) {
-      for (var j = 0; j < users.length; j++) {
-        var user = users[j];
-
-        var userEntry = getUserEntry(user, week.number);
-        userEntry.scoreResult = getIntersect(winningTeams, userEntry.teams).length;
-
-        user.scoreTotal = user.entries.reduce(function(prev, curr, i, a) {
-          return prev + curr.scoreResult;
-        }, 0);
-
-        var tbFav = Math.abs(week.scoreTbFav - userEntry.tiebreakerFavorite);
-        var tbOpp = Math.abs(week.scoreTbOpp - userEntry.tiebreakerOpponent);
-        userEntry.scoreTiebreaker = tbFav + tbOpp;
-
-        user.save(function(err) {console.log(err);});
-      }
-
-      res.redirect('/results');
+    model.User.where('entries.week').equals(week)
+              .limit(5).run(function (err, users) {
+        socket.emit('latestChange', { results : users });
     });
   });
 }

@@ -38,9 +38,9 @@ form(method='post',action='/picks')
         tr
           td.team= week.tiebreakerFavorite
           td.score: input.span1(type='number',name='entry[tiebreakerFavorite]',
-            value=entry.tiebreakerFavorite, disabled=entry)
+            value=entry ? entry.tiebreakerFavorite : 0, disabled=entry)
           td.spread= week.tiebreakerSpread
           td.score: input.span1(type='number',name='entry[tiebreakerOpponent]',
-            value=entry.tiebreakerOpponent, disabled=entry)
+            value=entry ? entry.tiebreakerOpponent : 0, disabled=entry)
           td.team= week.tiebreakerOpponent
   input.btn(type='submit',value='Submit',disabled=entry)

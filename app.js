@@ -118,21 +118,11 @@ app.get('/week', loadResults, restricted, toAdmin, routes.weekNew);
 app.post('/week', loadResults, restricted, toAdmin, routes.weekCreate);
 
 app.get('/score', loadResults, restricted, toAdmin, routes.scoreWeek);
-app.post('/score', loadResults, restricted, toAdmin, routes.submitScores);
+app.post('/score', loadResults, restricted, toAdmin, routes.submitScores(io.sockets));
 
 app.use(function(req, res, next) {
   res.status(404);
   res.render('404', { layout : false });
-});
-
-io.sockets.on('connection', function(socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function(data) {
-    console.log(data);
-  });
-  socket.on('refresh', function(data) {
-    socket.broadcast.emit('refresh', data);
-  });
 });
 
 mongoose.connect('mongodb://mafrauen:pigskin@staff.mongohq.com:10009/pigskinpicks');
