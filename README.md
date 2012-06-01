@@ -1,4 +1,4 @@
-## Pigskin Picks Football Pool
+# Pigskin Picks Football Pool
 
 What is it?
 -----------
@@ -20,7 +20,7 @@ The demo is available [here][url_heroku]
 
 
 
-## Technical Details
+# Technical Details
 
 
 Pages
