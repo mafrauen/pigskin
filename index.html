@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pigskin by mafrauen</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Pigskin</h1>
+        <p>Pigskin Picks</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/mafrauen/pigskin" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/mafrauen/pigskin/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/mafrauen/pigskin/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>Pigskin Picks Football Pool</h1>
+
+<h2>What is it?</h2>
+
+<p>Recreating the pigskin picks website originally located <a href="http://www.southslope.net/%7Emattbenge/pigskin/" title="Original Pick Site">here</a></p>
+
+<h2>What does it use?</h2>
+
+<ul>
+<li>node.js <a href="http://nodejs.org/">site</a>
+</li>
+<li>express.js <a href="http://expressjs.com/">site</a>
+</li>
+<li>mongoose.js <a href="http://mongoosejs.com/">site</a>
+</li>
+<li>cloud hosted mongodb at <a href="http://www.mongohq.com">MongoHQ</a>
+</li>
+<li>css from <a href="http://twitter.github.com/bootstrap">twitter bootstrap</a>
+</li>
+</ul><h2>Where can I use it?</h2>
+
+<p>The demo is available <a href="http://pigskinpicks.herokuapp.com">here</a></p>
+
+<h1>Technical Thoughts</h1>
+
+<h2>Pages</h2>
+
+<ul>
+<li>Nav bar
+
+<ul>
+<li>link to login/create new user</li>
+</ul>
+</li>
+<li>Side bar
+
+<ul>
+<li>results from last week</li>
+</ul>
+</li>
+<li>Results
+
+<ul>
+<li>everybody's results by week</li>
+<li>everybody's results YTD</li>
+<li>make sure user's results are easy to find</li>
+</ul>
+</li>
+<li>Make picks
+
+<ul>
+<li>enter picks for the week</li>
+<li>can only enter for current week</li>
+<li>if already entered for week, redirect to results/show picks for the week</li>
+</ul>
+</li>
+<li>Login
+
+<ul>
+<li>Username</li>
+<li>Full name</li>
+<li>password...</li>
+</ul>
+</li>
+</ul><h2>Models</h2>
+
+<ul>
+<li>
+<p>User</p>
+
+<ul>
+<li>Full Name</li>
+<li>username</li>
+<li>password</li>
+<li>Week
+
+<ul>
+<li>Week ID (needed to show right/wrong picks. would be linked not embedded. still ok?)</li>
+<li>Picked Teams</li>
+<li>Favorite Tiebreaker</li>
+<li>Opponent Tiebreaker</li>
+<li>Result Score</li>
+<li>Tiebreaker Score</li>
+</ul>
+</li>
+<li>Total Score</li>
+</ul>
+</li>
+<li>
+<p>Week</p>
+
+<ul>
+<li>Number (unique id, will reset each season)</li>
+<li>Date of games</li>
+<li>Games
+
+<ul>
+<li>Home Team</li>
+<li>Away Team</li>
+<li>Spread</li>
+<li>Home Favorite</li>
+</ul>
+</li>
+<li>Tiebreaker (game)</li>
+</ul>
+</li>
+</ul><h3>TODO</h3>
+
+<ul>
+<li>What to do when viewing Picks page if already submitted</li>
+<li>View existing picks as PDF / Better way to show submitted picks for the week</li>
+<li>View game results (scores, covers, etc.) for all weeks</li>
+<li>Change how picking works (buttons/radios/else?)</li>
+<li>Result order, sort by column</li>
+<li>Make sure can't submit picks unless all items picked and tiebreaker entered
+
+<ul>
+<li>-&gt; model validation or javascript to enable button?</li>
+</ul>
+</li>
+<li>Results sidebar - view: make sure correct entry is shown
+
+<ul>
+<li>Make sure user can't submit after scores are submitted for the week</li>
+</ul>
+</li>
+<li>When going to login page, make sure focus is on text input</li>
+<li>Make sure picks only count if submitted before games</li>
+<li>iOS
+
+<ul>
+<li>Rotation (may be bootstrap issue)</li>
+<li>Tables are probably not best option for iPhone viewing</li>
+</ul>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/mafrauen">mafrauen</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
