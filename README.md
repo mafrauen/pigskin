@@ -1,35 +1,27 @@
+## Pigskin Picks Football Pool
+
+What is it?
+-----------
 Recreating the pigskin picks website originally located [here][southslope_url]
 
-Using node.js and express.js.
-Using mongoose.js for data modeling, hosting data on [MongoHQ][mongohq_url].
-Initial css is from [twitter bootstrap][bootstrap_url].
 
-Page will be hosted [here][heroku_url] during development, and possibly for production as well.
-
-
-
-[southslope_url]: http://www.southslope.net/~mattbenge/pigskin/  "Original Pick Site"
-[mongohq_url]: http://www.mongohq.com
-[bootstrap_url]: http://twitter.github.com/bootstrap
-[heroku_url]: http://pigskinpicks.herokuapp.com
+What does it use?
+-----------------
+* node.js [site][url_node]
+* express.js [site][url_express]
+* mongoose.js [site][url_mongoose]
+* cloud hosted mongodb [MongoHQ][url_mongo]
+* css from [twitter bootstrap][url_bootstrap]
 
 
-# TODO
+Where can I use it?
+-------------------
+The demo is available [here][url_heroku]
 
-* What to do when viewing Picks page if already submitted
-* View existing picks as PDF / Better way to show submitted picks for the week
-* View game results (scores, covers, etc.) for all weeks
-* Change how picking works (buttons/radios/else?)
-* Result order, sort by column
-* Make sure can't submit picks unless all items picked and tiebreaker entered
-  * -> model validation or javascript to enable button?
-* Results sidebar - view: make sure correct entry is shown
-  * Make sure user can't submit after scores are submitted for the week
-* When going to login page, make sure focus is on text input
-* Make sure picks only count if submitted before games
-* iOS
-  * Rotation (may be bootstrap issue)
-  * Tables are probably not best option for iPhone viewing
+
+
+## Technical Details
+
 
 Pages
 -----
@@ -78,6 +70,29 @@ Models
      * Home Favorite
   * Tiebreaker (game)
 
-Queries I'll Need
------------------
-    top 3(or more) winners for the week : Users(all).week(7).sort(score -1, tb 1).limit(3)
+### TODO
+
+* What to do when viewing Picks page if already submitted
+* View existing picks as PDF / Better way to show submitted picks for the week
+* View game results (scores, covers, etc.) for all weeks
+* Change how picking works (buttons/radios/else?)
+* Result order, sort by column
+* Make sure can't submit picks unless all items picked and tiebreaker entered
+  * -> model validation or javascript to enable button?
+* Results sidebar - view: make sure correct entry is shown
+  * Make sure user can't submit after scores are submitted for the week
+* When going to login page, make sure focus is on text input
+* Make sure picks only count if submitted before games
+* iOS
+  * Rotation (may be bootstrap issue)
+  * Tables are probably not best option for iPhone viewing
+
+
+
+[url_node]: http://nodejs.org/
+[url_express]: http://expressjs.com/
+[url_mongoose]: http://mongoosejs.com/
+[url_southslope]: http://www.southslope.net/~mattbenge/pigskin/  "Original Pick Site"
+[url_mongohq]: http://www.mongohq.com
+[url_bootstrap]: http://twitter.github.com/bootstrap
+[url_heroku]: http://pigskinpicks.herokuapp.com
