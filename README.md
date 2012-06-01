@@ -10,7 +10,7 @@ What does it use?
 * node.js [site][url_node]
 * express.js [site][url_express]
 * mongoose.js [site][url_mongoose]
-* cloud hosted mongodb [MongoHQ][url_mongo]
+* cloud hosted mongodb at [MongoHQ][url_mongohq]
 * css from [twitter bootstrap][url_bootstrap]
 
 
@@ -20,7 +20,7 @@ The demo is available [here][url_heroku]
 
 
 
-# Technical Details
+# Technical Thoughts
 
 
 Pages
